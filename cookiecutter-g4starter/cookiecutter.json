@@ -1,5 +1,8 @@
 {
   "project_name": "MyGeant4Project",
+  "use_multithreading": "true",
+  "physics_list_type": "qbbc",
+  "physics_factory_name": "QBBC",
   "particle_source_type": "gps",
-  "use_multithreading": "true"
+  "selected_actions": "[]"
 }

@@ -12,7 +12,13 @@
 //
 
 #include "DetectorConstruction.hh"
+{%- if cookiecutter.physics_list_type == "custom" %}
+#include "PhysicsList.hh"
+{%- elif cookiecutter.physics_list_type == "factory" %}
+#include "G4PhysListFactory.hh"
+{%- else %}
 #include "QBBC.hh"
+{%- endif %}
 #include "ActionInitialization.hh"
 
 #include "G4RunManagerFactory.hh"
@@ -37,7 +43,15 @@ int main(int argc, char **argv)
 
     // Set mandatory initialization classes
     runManager->SetUserInitialization(new DetectorConstruction);
+{%- if cookiecutter.physics_list_type == "custom" %}
+    runManager->SetUserInitialization(new PhysicsList);
+{%- elif cookiecutter.physics_list_type == "factory" %}
+    G4PhysListFactory factory;
+    auto physicsList = factory.GetReferencePhysList("{{ cookiecutter.physics_factory_name }}");
+    runManager->SetUserInitialization(physicsList);
+{%- else %}
     runManager->SetUserInitialization(new QBBC);
+{%- endif %}
     runManager->SetUserInitialization(new ActionInitialization);
 
     // Initialize G4 kernel

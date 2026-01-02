@@ -61,9 +61,9 @@ def generate_project(context):
 
             try:
                 shutil.rmtree(target_dir)
-                print(f"✅ Existing folder deleted: {target_dir}")
+                print(f"Existing folder deleted: {target_dir}")
             except Exception as e:
-                print(f"\n❌ Error: Failed to delete folder: {e}")
+                print(f"\nError: Failed to delete folder: {e}")
                 return None
 
         elif action == "rename":
@@ -82,7 +82,7 @@ def generate_project(context):
 
             # Check again (recursive check)
             if target_dir.exists():
-                print(f"\n⚠️  '{new_name}' folder also exists.")
+                print(f"\n'{new_name}' folder also exists.")
                 return generate_project(context)  # Recursive call
 
     # Run cookiecutter
@@ -95,5 +95,5 @@ def generate_project(context):
         )
         return Path(project_path)
     except Exception as e:
-        print(f"\n❌ Error: Project generation failed: {e}")
+        print(f"\nError: Project generation failed: {e}")
         return None
