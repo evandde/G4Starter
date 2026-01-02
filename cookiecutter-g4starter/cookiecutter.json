@@ -1,0 +1,5 @@
+{
+  "project_name": "MyGeant4Project",
+  "particle_source_type": "gps",
+  "use_multithreading": "true"
+}

@@ -1,0 +1,2 @@
+questionary==2.0.1
+cookiecutter==2.6.0
