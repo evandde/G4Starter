@@ -25,14 +25,18 @@ def test_project_generation():
     print("="*60)
     print()
 
-    # Define test context (Phase 2 with restructured CLI)
+    # Define test context (Phase 3 with SD, Run, Hit classes)
     test_context = {
         'project_name': 'TestG4Project',
         'use_multithreading': 'true',
         'physics_list_type': 'qbbc',
         'physics_factory_name': 'QBBC',
         'particle_source_type': 'gps',
-        'selected_actions': json.dumps(['RunAction', 'EventAction'])
+        'selected_actions': json.dumps(['RunAction', 'EventAction']),
+        'sd_class_name': 'CalorimeterSD',
+        'use_custom_run': 'true',
+        'use_hit_class': 'true',
+        'hit_class_name': 'CalorimeterHit'
     }
 
     print("Test configuration:")
@@ -41,6 +45,9 @@ def test_project_generation():
     print(f"  - Physics type: {test_context['physics_list_type']}")
     print(f"  - Source type: {test_context['particle_source_type']}")
     print(f"  - Selected actions: {test_context['selected_actions']}")
+    print(f"  - SensitiveDetector: {test_context['sd_class_name']}")
+    print(f"  - Custom Run class: {test_context['use_custom_run']}")
+    print(f"  - Hit class: {test_context['hit_class_name']}")
     print()
 
     # Delete existing test project
@@ -71,11 +78,17 @@ def test_project_generation():
         'include/PrimaryGeneratorAction.hh',
         'include/RunAction.hh',
         'include/EventAction.hh',
+        'include/CalorimeterSD.hh',
+        'include/Run.hh',
+        'include/CalorimeterHit.hh',
         'src/DetectorConstruction.cc',
         'src/ActionInitialization.cc',
         'src/PrimaryGeneratorAction.cc',
         'src/RunAction.cc',
         'src/EventAction.cc',
+        'src/CalorimeterSD.cc',
+        'src/Run.cc',
+        'src/CalorimeterHit.cc',
     ]
 
     # Files that should NOT exist based on test context
@@ -84,10 +97,14 @@ def test_project_generation():
         'include/TrackingAction.hh',
         'include/StackingAction.hh',
         'include/PhysicsList.hh',
+        'include/SensitiveDetector.hh',  # Should be renamed to CalorimeterSD.hh
+        'include/SensitiveDetectorHit.hh',  # Should be renamed to CalorimeterHit.hh
         'src/SteppingAction.cc',
         'src/TrackingAction.cc',
         'src/StackingAction.cc',
         'src/PhysicsList.cc',
+        'src/SensitiveDetector.cc',  # Should be renamed to CalorimeterSD.cc
+        'src/SensitiveDetectorHit.cc',  # Should be renamed to CalorimeterHit.cc
     ]
 
     all_exist = True

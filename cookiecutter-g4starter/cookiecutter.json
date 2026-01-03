@@ -4,5 +4,9 @@
   "physics_list_type": "qbbc",
   "physics_factory_name": "QBBC",
   "particle_source_type": "gps",
-  "selected_actions": "[]"
+  "selected_actions": "[]",
+  "sd_class_name": "",
+  "use_custom_run": "false",
+  "use_hit_class": "false",
+  "hit_class_name": ""
 }

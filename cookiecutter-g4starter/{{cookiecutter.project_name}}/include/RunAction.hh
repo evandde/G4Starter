@@ -9,9 +9,11 @@ class RunAction : public G4UserRunAction
 public:
     RunAction() = default;
     ~RunAction() override = default;
-
-    void BeginOfRunAction(const G4Run* aRun) override;
-    void EndOfRunAction(const G4Run* aRun) override;
+{% if cookiecutter.use_custom_run == "true" %}
+    G4Run* GenerateRun() override;
+{% endif %}
+    void BeginOfRunAction(const G4Run* run) override;
+    void EndOfRunAction(const G4Run* run) override;
 };
 
 #endif

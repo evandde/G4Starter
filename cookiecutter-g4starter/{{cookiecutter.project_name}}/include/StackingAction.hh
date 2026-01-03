@@ -11,7 +11,7 @@ public:
     StackingAction() = default;
     ~StackingAction() override = default;
 
-    G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack) override;
+    G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* track) override;
 };
 
 #endif

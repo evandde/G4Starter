@@ -10,7 +10,7 @@ public:
     SteppingAction() = default;
     ~SteppingAction() override = default;
 
-    void UserSteppingAction(const G4Step* aStep) override;
+    void UserSteppingAction(const G4Step* step) override;
 };
 
 #endif

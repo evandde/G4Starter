@@ -8,8 +8,7 @@ class ActionInitialization : public G4VUserActionInitialization
 public:
     ActionInitialization() = default;
     ~ActionInitialization() override = default;
-
-{%- if cookiecutter.use_multithreading == "true" %}
+{% if cookiecutter.use_multithreading == "true" %}
     void BuildForMaster() const override;
 {%- endif %}
     void Build() const override;

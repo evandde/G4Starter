@@ -2,11 +2,10 @@
 #define PrimaryGeneratorAction_h 1
 
 #include "G4VUserPrimaryGeneratorAction.hh"
-
 {%- if cookiecutter.particle_source_type == "gps" %}
-class G4GeneralParticleSource;
+#include "G4GeneralParticleSource.hh"
 {%- else %}
-class G4ParticleGun;
+#include "G4ParticleGun.hh"
 {%- endif %}
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
@@ -15,7 +14,7 @@ public:
     PrimaryGeneratorAction();
     ~PrimaryGeneratorAction() override;
 
-    void GeneratePrimaries(G4Event *) override;
+    void GeneratePrimaries(G4Event *event) override;
 
 private:
 {%- if cookiecutter.particle_source_type == "gps" %}

@@ -17,6 +17,7 @@
 {%- endif %}
 
 {%- if cookiecutter.use_multithreading == "true" %}
+
 void ActionInitialization::BuildForMaster() const
 {
 {%- if '"RunAction"' in cookiecutter.selected_actions %}

@@ -1,5 +1,5 @@
 #include "SteppingAction.hh"
 
-void SteppingAction::UserSteppingAction(const G4Step* aStep)
+void SteppingAction::UserSteppingAction(const G4Step* step)
 {
 }

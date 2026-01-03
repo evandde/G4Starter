@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """
 Post-generation hook for G4Starter
-Removes unselected UserAction files and PhysicsList if not using custom physics
+Removes unselected UserAction files, PhysicsList, and renames/removes SD/Hit/Run files
 """
 
 import os
 import json
+import shutil
 from pathlib import Path
 
 
@@ -43,6 +44,56 @@ def main():
         remove_file(physics_header)
         remove_file(physics_source)
 
+    # Handle SensitiveDetector files (rename or remove)
+    sd_class_name = """{{ cookiecutter.sd_class_name }}"""
+    placeholder_sd_header = project_root / "include" / "SensitiveDetector.hh"
+    placeholder_sd_source = project_root / "src" / "SensitiveDetector.cc"
+
+    if sd_class_name:
+        # Rename placeholder to actual class name
+        actual_sd_header = project_root / "include" / f"{sd_class_name}.hh"
+        actual_sd_source = project_root / "src" / f"{sd_class_name}.cc"
+
+        if placeholder_sd_header.exists():
+            shutil.move(str(placeholder_sd_header), str(actual_sd_header))
+            print(f"Renamed: SensitiveDetector.hh -> {sd_class_name}.hh")
+        if placeholder_sd_source.exists():
+            shutil.move(str(placeholder_sd_source), str(actual_sd_source))
+            print(f"Renamed: SensitiveDetector.cc -> {sd_class_name}.cc")
+    else:
+        # Remove placeholder files
+        remove_file(placeholder_sd_header)
+        remove_file(placeholder_sd_source)
+
+    # Handle Hit class files (rename or remove)
+    use_hit_class = "{{ cookiecutter.use_hit_class }}"
+    hit_class_name = """{{ cookiecutter.hit_class_name }}"""
+    placeholder_hit_header = project_root / "include" / "SensitiveDetectorHit.hh"
+    placeholder_hit_source = project_root / "src" / "SensitiveDetectorHit.cc"
+
+    if use_hit_class == "true" and hit_class_name:
+        actual_hit_header = project_root / "include" / f"{hit_class_name}.hh"
+        actual_hit_source = project_root / "src" / f"{hit_class_name}.cc"
+
+        if placeholder_hit_header.exists():
+            shutil.move(str(placeholder_hit_header), str(actual_hit_header))
+            print(f"Renamed: SensitiveDetectorHit.hh -> {hit_class_name}.hh")
+        if placeholder_hit_source.exists():
+            shutil.move(str(placeholder_hit_source), str(actual_hit_source))
+            print(f"Renamed: SensitiveDetectorHit.cc -> {hit_class_name}.cc")
+    else:
+        remove_file(placeholder_hit_header)
+        remove_file(placeholder_hit_source)
+
+    # Handle Run class files
+    use_custom_run = "{{ cookiecutter.use_custom_run }}"
+    if use_custom_run != "true":
+        run_header = project_root / "include" / "Run.hh"
+        run_source = project_root / "src" / "Run.cc"
+        remove_file(run_header)
+        remove_file(run_source)
+
+    # Final summary
     print("\nProject generation complete!")
     if selected_actions:
         print(f"Included UserActions: {', '.join(selected_actions)}")
@@ -58,6 +109,14 @@ def main():
     else:
         physics_display = "QBBC"
     print(f"Physics list: {physics_display}")
+
+    # Display SD/Hit/Run status
+    if sd_class_name:
+        print(f"SensitiveDetector: {sd_class_name}")
+    if use_hit_class == "true" and hit_class_name:
+        print(f"Hit class: {hit_class_name}")
+    if use_custom_run == "true":
+        print("Custom Run class: Yes")
 
 
 if __name__ == "__main__":
