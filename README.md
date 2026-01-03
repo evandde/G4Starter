@@ -1,54 +1,211 @@
 # G4Starter
 
-Geant4 시뮬레이션 프로젝트를 몇 번의 클릭만으로 생성하는 도구입니다.
+> Interactive CLI tool for generating Geant4 simulation projects
 
-## 특징
+[English](#english) | [한국어](#korean)
 
-- 설치 불필요한 실행 파일 제공 (예정)
-- 화살표 키로 선택하는 직관적인 인터페이스
-- 컴파일 가능한 Geant4 C++ 프로젝트 자동 생성
-- Windows, macOS, Linux 지원
+---
 
-## 다운로드
+## English
 
-[Releases](https://github.com/yourusername/G4Starter/releases) 페이지에서 운영체제에 맞는 파일을 다운로드하세요.
+### What is G4Starter?
 
-- Windows: `G4Starter.exe`
-- macOS: `G4Starter_mac`
-- Linux: `G4Starter_linux`
+G4Starter is a command-line tool that generates ready-to-compile Geant4 C++ simulation projects through an interactive interface. No more copying boilerplate code or setting up project structure manually.
 
-## 사용 방법
+### Features
 
-1. 다운로드한 파일 실행
-2. 화면의 질문에 답변 (화살표 키 + Enter)
-3. 생성된 폴더로 이동하여 빌드
+- **No Installation Required**: Single executable file (Windows/macOS/Linux)
+- **Interactive CLI**: Select options with arrow keys
+- **Flexible Configuration**:
+  - Multithreading support (optional)
+  - 3 physics list options (QBBC, PhysicsListFactory, Custom modular)
+  - ParticleGun or GPS source
+  - Optional UserAction classes (Run, Event, Stepping, Tracking, Stacking)
+  - SensitiveDetector support
+  - Advanced mode: Custom Run class, Hit class
+- **Production Ready**: Generated projects compile with Geant4 out of the box
 
-```bash
-cd YourProject
-mkdir build && cd build
-cmake ..
-make
-./YourProject
-```
+### Quick Start
 
-## 개발자용
+1. **Download** the executable for your platform from [Releases](https://github.com/yourusername/G4Starter/releases)
+   - Windows: `G4Starter.exe`
+   - macOS: `G4Starter_mac`
+   - Linux: `G4Starter_linux`
 
-개발 환경 설정:
+2. **Run** the executable
+   ```bash
+   # Windows
+   G4Starter.exe
 
-```bash
-# 저장소 클론
-git clone https://github.com/yourusername/G4Starter.git
-cd G4Starter
+   # macOS/Linux (make executable first)
+   chmod +x G4Starter_mac
+   ./G4Starter_mac
+   ```
 
-# 가상환경 및 의존성 설치
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+3. **Answer** the interactive questions (use arrow keys to select)
 
-# 실행
-python src/main.py
-```
+4. **Build** your generated project
+   ```bash
+   # Windows
+   cd YourProject
+   mkdir build
+   cd build
+   cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+   ninja
+   .\YourProject.exe
 
-## 라이선스
+   # macOS/Linux
+   cd YourProject
+   mkdir build && cd build
+   cmake .. -DCMAKE_BUILD_TYPE=Release
+   make
+   ./YourProject
+   ```
 
-MIT License
+### Requirements
+
+**To run G4Starter**: None (standalone executable)
+
+**To build generated projects**:
+- Geant4 10.7 or later
+- CMake 3.16 or later
+- C++17 compatible compiler
+- **Windows**: Ninja build system recommended
+- **macOS/Linux**: Make (usually pre-installed)
+
+### What Gets Generated?
+
+Your project will include:
+- `CMakeLists.txt` - Build configuration
+- `main.cc` - Application entry point
+- `DetectorConstruction` - Geometry setup (World volume)
+- `ActionInitialization` - Action registration
+- `PrimaryGeneratorAction` - Particle source (Gun or GPS)
+- Optional action classes based on your selections
+- `vis.mac` - Visualization macro (OpenGL)
+- `run.mac` - Run macro (empty template for your commands)
+
+### Troubleshooting
+
+**Issue**: "Template directory not found"
+**Solution**: Make sure you're running the executable directly, not through a symbolic link
+
+**Issue**: Compilation errors in generated project
+**Solution**: Ensure Geant4 environment is set up correctly (`source geant4.sh` or similar)
+
+**Issue**: Colors not displaying in terminal
+**Solution**: Use a terminal that supports ANSI colors (Windows Terminal, iTerm2, etc.)
+
+**Issue**: Ninja not found (Windows)
+**Solution**: Install Ninja via package manager or use Visual Studio generator instead
+
+### Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
+
+### License
+
+MIT License - see [LICENSE](LICENSE) file
+
+---
+
+## Korean
+
+### G4Starter란?
+
+G4Starter는 대화형 인터페이스를 통해 컴파일 가능한 Geant4 C++ 시뮬레이션 프로젝트를 생성하는 명령줄 도구입니다. 더 이상 보일러플레이트 코드를 복사하거나 프로젝트 구조를 수동으로 설정할 필요가 없습니다.
+
+### 주요 기능
+
+- **설치 불필요**: 단일 실행 파일 (Windows/macOS/Linux)
+- **대화형 인터페이스**: 화살표 키로 옵션 선택
+- **유연한 설정**:
+  - 멀티스레딩 지원 (선택 사항)
+  - 3가지 물리 리스트 옵션 (QBBC, PhysicsListFactory, Custom)
+  - ParticleGun 또는 GPS 소스
+  - 선택적 UserAction 클래스들 (Run, Event, Stepping, Tracking, Stacking)
+  - SensitiveDetector 지원
+  - 고급 모드: Custom Run 클래스, Hit 클래스
+- **즉시 사용 가능**: 생성된 프로젝트는 바로 컴파일 가능
+
+### 사용 방법
+
+1. **다운로드**: [Releases](https://github.com/yourusername/G4Starter/releases)에서 운영체제에 맞는 실행 파일 다운로드
+   - Windows: `G4Starter.exe`
+   - macOS: `G4Starter_mac`
+   - Linux: `G4Starter_linux`
+
+2. **실행**
+   ```bash
+   # Windows
+   G4Starter.exe
+
+   # macOS/Linux (실행 권한 부여 후)
+   chmod +x G4Starter_mac
+   ./G4Starter_mac
+   ```
+
+3. **질문에 답변** (화살표 키로 선택)
+
+4. **프로젝트 빌드**
+   ```bash
+   # Windows
+   cd YourProject
+   mkdir build
+   cd build
+   cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+   ninja
+   .\YourProject.exe
+
+   # macOS/Linux
+   cd YourProject
+   mkdir build && cd build
+   cmake .. -DCMAKE_BUILD_TYPE=Release
+   make
+   ./YourProject
+   ```
+
+### 요구 사항
+
+**G4Starter 실행**: 없음 (독립 실행 파일)
+
+**생성된 프로젝트 빌드**:
+- Geant4 10.7 이상
+- CMake 3.16 이상
+- C++17 호환 컴파일러
+- **Windows**: Ninja 빌드 시스템 권장
+- **macOS/Linux**: Make (보통 기본 설치됨)
+
+### 생성되는 파일
+
+프로젝트에 포함되는 파일:
+- `CMakeLists.txt` - 빌드 설정
+- `main.cc` - 애플리케이션 진입점
+- `DetectorConstruction` - 지오메트리 설정 (World volume)
+- `ActionInitialization` - 액션 등록
+- `PrimaryGeneratorAction` - 입자 소스 (Gun 또는 GPS)
+- 선택한 액션 클래스들
+- `vis.mac` - 시각화 매크로 (OpenGL)
+- `run.mac` - 실행 매크로 (빈 템플릿)
+
+### 문제 해결
+
+**문제**: "Template directory not found"
+**해결**: 심볼릭 링크가 아닌 실행 파일을 직접 실행하세요
+
+**문제**: 생성된 프로젝트 컴파일 오류
+**해결**: Geant4 환경이 올바르게 설정되었는지 확인 (`source geant4.sh` 등)
+
+**문제**: 터미널에 색상이 표시되지 않음
+**해결**: ANSI 색상을 지원하는 터미널 사용 (Windows Terminal, iTerm2 등)
+
+**문제**: Ninja를 찾을 수 없음 (Windows)
+**해결**: 패키지 관리자로 Ninja 설치 또는 Visual Studio generator 사용
+
+### 기여하기
+
+개발 환경 설정 및 가이드라인은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참조하세요.
+
+### 라이선스
+
+MIT License - [LICENSE](LICENSE) 파일 참조

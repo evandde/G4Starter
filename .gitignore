@@ -22,8 +22,8 @@ wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-*.spec
+# PyInstaller (keep spec file, ignore build artifacts)
+# *.spec is commented out because we track G4Starter.spec
 
 # Testing
 .pytest_cache/

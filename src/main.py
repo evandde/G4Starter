@@ -15,8 +15,40 @@ from cli import run_cli
 from generator import generate_project
 
 
+def get_build_instructions(project_name: str) -> list[str]:
+    """Generate OS-specific build instructions"""
+    if sys.platform == 'win32':
+        return [
+            f"cd {project_name}",
+            "mkdir build",
+            "cd build",
+            "cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release",
+            "ninja",
+            f".\\{project_name}.exe"
+        ]
+    else:  # Linux, macOS
+        return [
+            f"cd {project_name}",
+            "mkdir build && cd build",
+            "cmake .. -DCMAKE_BUILD_TYPE=Release",
+            "make",
+            f"./{project_name}"
+        ]
+
+
 def main():
     """Main entry point for G4Starter"""
+    import os
+
+    # Prevent re-execution by cookiecutter subprocess
+    # Cookiecutter may spawn a new Python process, which would re-run main()
+    if os.environ.get('G4STARTER_RUNNING') == '1':
+        # We're in a subprocess spawned by cookiecutter, exit silently
+        return 0
+
+    # Mark that we're running
+    os.environ['G4STARTER_RUNNING'] = '1'
+
     print("="*60)
     print("  G4Starter - Geant4 Project Generator")
     print("="*60)
@@ -40,15 +72,12 @@ def main():
             return 1
 
         print("\n" + "="*60)
-        print(f"✅ Geant4 project successfully generated!")
-        print(f"📁 Project location: {project_path}")
+        print(f"Geant4 project successfully generated!")
+        print(f"Project location: {project_path}")
         print("="*60)
         print("\nNext steps:")
-        print(f"  cd {context['project_name']}")
-        print("  mkdir build && cd build")
-        print("  cmake ..")
-        print("  cmake --build . --config Release")
-        print(f"  ./{context['project_name']}")
+        for instruction in get_build_instructions(context['project_name']):
+            print(f"  {instruction}")
         print()
 
         return 0

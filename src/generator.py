@@ -4,10 +4,28 @@ Handles Geant4 project generation using Cookiecutter
 """
 
 import os
+import sys
 import shutil
 from pathlib import Path
 from cookiecutter.main import cookiecutter
 import questionary
+
+
+def get_template_directory() -> Path:
+    """
+    Get cookiecutter template directory, handling PyInstaller bundling
+
+    Returns:
+        Path: Path to the cookiecutter-g4starter directory
+    """
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        # Running in PyInstaller bundle
+        return Path(sys._MEIPASS) / 'cookiecutter-g4starter'
+    else:
+        # Running in normal Python
+        src_dir = Path(__file__).parent
+        project_root = src_dir.parent
+        return project_root / 'cookiecutter-g4starter'
 
 
 def generate_project(context):
@@ -21,9 +39,7 @@ def generate_project(context):
         Path: Path to the generated project directory, or None if cancelled
     """
     # Get the cookiecutter template directory
-    src_dir = Path(__file__).parent
-    project_root = src_dir.parent
-    template_dir = project_root / 'cookiecutter-g4starter'
+    template_dir = get_template_directory()
 
     if not template_dir.exists():
         raise FileNotFoundError(f"Template directory not found: {template_dir}")
