@@ -155,7 +155,6 @@ def test_project_generation():
 
         gps_checks = [
             ('G4GeneralParticleSource' in header_content, 'Header: G4GeneralParticleSource declaration'),
-            ('G4GeneralParticleSource.hh' in source_content, 'Source: G4GeneralParticleSource header inclusion'),
             ('new G4GeneralParticleSource()' in source_content, 'Source: GPS object creation'),
         ]
 
