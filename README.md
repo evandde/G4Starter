@@ -52,7 +52,9 @@ This will download the latest version to `~/.local/bin/g4starter`.
 
 Download the executable from [Releases](https://github.com/evandde/G4Starter/releases) and run it directly.
 
-**OR use terminal:**
+> **Note**: Unlike package manager installations (which use `g4starter`), manually downloaded executables retain their original names (`G4Starter.exe`, `G4Starter_mac`, `G4Starter_linux`).
+
+**Using terminal:**
 
 **Windows:**
 ```powershell
@@ -82,8 +84,9 @@ chmod +x G4Starter
    g4starter
 
    # Or run the downloaded executable directly
-   ./G4Starter_mac  # macOS/Linux
-   G4Starter.exe    # Windows
+   ./G4Starter_mac    # macOS
+   ./G4Starter_linux  # Linux
+   .\G4Starter.exe    # Windows
    ```
 
 2. **Answer** the interactive questions (use arrow keys to select)
@@ -111,7 +114,7 @@ chmod +x G4Starter
 **To run G4Starter**: None (standalone executable)
 
 **To build generated projects**:
-- Geant4 10.7 or later
+- Geant4 11.0 or later (tested with 11.4)
 - CMake 3.16 or later
 - C++17 compatible compiler
 - **Windows**: Ninja build system recommended
@@ -125,23 +128,17 @@ Your project will include:
 - `DetectorConstruction` - Geometry setup (World volume)
 - `ActionInitialization` - Action registration
 - `PrimaryGeneratorAction` - Particle source (Gun or GPS)
-- Optional action classes based on your selections
+- Additional classes based on your configuration:
+  - Optional UserAction classes (Run, Event, Stepping, Tracking, Stacking)
+  - Optional PhysicsList (for custom modular physics)
+  - Optional SensitiveDetector, Run, and Hit classes (advanced mode)
 - `vis.mac` - Visualization macro (OpenGL)
 - `run.mac` - Run macro (empty template for your commands)
 
 ### Troubleshooting
 
-**Issue**: "Template directory not found"
-**Solution**: Make sure you're running the executable directly, not through a symbolic link
-
 **Issue**: Compilation errors in generated project
-**Solution**: Ensure Geant4 environment is set up correctly (`source geant4.sh` or similar)
-
-**Issue**: Colors not displaying in terminal
-**Solution**: Use a terminal that supports ANSI colors (Windows Terminal, iTerm2, etc.)
-
-**Issue**: Ninja not found (Windows)
-**Solution**: Install Ninja via package manager or use Visual Studio generator instead
+**Solution**: Ensure Geant4 environment is set up correctly (`source geant4.sh` on Unix, or use Geant4 command prompt on Windows)
 
 ### Contributing
 
@@ -199,7 +196,9 @@ curl -fsSL https://raw.githubusercontent.com/evandde/G4Starter/main/install.sh |
 
 [Releases](https://github.com/evandde/G4Starter/releases)에서 실행 파일을 다운로드하여 직접 실행하세요.
 
-**또는 터미널 사용:**
+> **참고**: 패키지 매니저 설치(`g4starter` 명령어)와 달리, 수동 다운로드한 실행 파일은 원본 이름(`G4Starter.exe`, `G4Starter_mac`, `G4Starter_linux`)을 유지합니다.
+
+**터미널 사용:**
 
 **Windows:**
 ```powershell
@@ -229,8 +228,9 @@ chmod +x G4Starter
    g4starter
 
    # 또는 다운로드한 실행 파일 직접 실행
-   ./G4Starter_mac  # macOS/Linux
-   G4Starter.exe    # Windows
+   ./G4Starter_mac    # macOS
+   ./G4Starter_linux  # Linux
+   .\G4Starter.exe    # Windows
    ```
 
 2. **질문에 답변** (화살표 키로 선택)
@@ -258,7 +258,7 @@ chmod +x G4Starter
 **G4Starter 실행**: 없음 (독립 실행 파일)
 
 **생성된 프로젝트 빌드**:
-- Geant4 10.7 이상
+- Geant4 11.0 이상 (11.4에서 테스트됨)
 - CMake 3.16 이상
 - C++17 호환 컴파일러
 - **Windows**: Ninja 빌드 시스템 권장
@@ -272,23 +272,17 @@ chmod +x G4Starter
 - `DetectorConstruction` - 지오메트리 설정 (World volume)
 - `ActionInitialization` - 액션 등록
 - `PrimaryGeneratorAction` - 입자 소스 (Gun 또는 GPS)
-- 선택한 액션 클래스들
+- 설정에 따른 추가 클래스:
+  - 선택적 UserAction 클래스들 (Run, Event, Stepping, Tracking, Stacking)
+  - 선택적 PhysicsList (커스텀 모듈식 물리)
+  - 선택적 SensitiveDetector, Run, Hit 클래스 (고급 모드)
 - `vis.mac` - 시각화 매크로 (OpenGL)
 - `run.mac` - 실행 매크로 (빈 템플릿)
 
 ### 문제 해결
 
-**문제**: "Template directory not found"
-**해결**: 심볼릭 링크가 아닌 실행 파일을 직접 실행하세요
-
 **문제**: 생성된 프로젝트 컴파일 오류
-**해결**: Geant4 환경이 올바르게 설정되었는지 확인 (`source geant4.sh` 등)
-
-**문제**: 터미널에 색상이 표시되지 않음
-**해결**: ANSI 색상을 지원하는 터미널 사용 (Windows Terminal, iTerm2 등)
-
-**문제**: Ninja를 찾을 수 없음 (Windows)
-**해결**: 패키지 관리자로 Ninja 설치 또는 Visual Studio generator 사용
+**해결**: Geant4 환경이 올바르게 설정되었는지 확인 (Unix: `source geant4.sh`, Windows: Geant4 명령 프롬프트 사용)
 
 ### 기여하기
 
