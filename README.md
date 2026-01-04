@@ -40,22 +40,33 @@ brew tap evandde/tap
 brew install g4starter
 ```
 
-#### Option 2: Download Binary
+#### Option 2: Install Script (macOS/Linux)
 
-1. **Download** the executable for your platform from [Releases](https://github.com/evandde/G4Starter/releases)
-   - Windows: `G4Starter.exe`
-   - macOS: `G4Starter_mac`
-   - Linux: `G4Starter_linux`
+```bash
+curl -fsSL https://raw.githubusercontent.com/evandde/G4Starter/main/install.sh | bash
+```
 
-2. **Run** the executable
-   ```bash
-   # Windows
-   G4Starter.exe
+This will download the latest version to `~/.local/bin/g4starter`.
 
-   # macOS/Linux (make executable first)
-   chmod +x G4Starter_mac
-   ./G4Starter_mac
-   ```
+#### Option 3: Manual Download
+
+**Windows:**
+
+Download `G4Starter.exe` from [Releases](https://github.com/evandde/G4Starter/releases) and run it.
+
+**macOS:**
+```bash
+curl -L -o G4Starter https://github.com/evandde/G4Starter/releases/latest/download/G4Starter_mac
+chmod +x G4Starter
+./G4Starter
+```
+
+**Linux:**
+```bash
+curl -L -o G4Starter https://github.com/evandde/G4Starter/releases/latest/download/G4Starter_linux
+chmod +x G4Starter
+./G4Starter
+```
 
 ### Quick Start
 
@@ -170,22 +181,33 @@ brew tap evandde/tap
 brew install g4starter
 ```
 
-#### 방법 2: 바이너리 다운로드
+#### 방법 2: 설치 스크립트 (macOS/Linux)
 
-1. **다운로드**: [Releases](https://github.com/evandde/G4Starter/releases)에서 운영체제에 맞는 실행 파일 다운로드
-   - Windows: `G4Starter.exe`
-   - macOS: `G4Starter_mac`
-   - Linux: `G4Starter_linux`
+```bash
+curl -fsSL https://raw.githubusercontent.com/evandde/G4Starter/main/install.sh | bash
+```
 
-2. **실행**
-   ```bash
-   # Windows
-   G4Starter.exe
+최신 버전을 `~/.local/bin/g4starter`에 자동 설치합니다.
 
-   # macOS/Linux (실행 권한 부여 후)
-   chmod +x G4Starter_mac
-   ./G4Starter_mac
-   ```
+#### 방법 3: 수동 다운로드
+
+**Windows:**
+
+[Releases](https://github.com/evandde/G4Starter/releases)에서 `G4Starter.exe`를 다운로드하여 실행하세요.
+
+**macOS:**
+```bash
+curl -L -o G4Starter https://github.com/evandde/G4Starter/releases/latest/download/G4Starter_mac
+chmod +x G4Starter
+./G4Starter
+```
+
+**Linux:**
+```bash
+curl -L -o G4Starter https://github.com/evandde/G4Starter/releases/latest/download/G4Starter_linux
+chmod +x G4Starter
+./G4Starter
+```
 
 ### 사용 방법
 

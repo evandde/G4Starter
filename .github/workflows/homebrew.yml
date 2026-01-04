@@ -1,24 +1,73 @@
-name: Homebrew
+name: Update Homebrew
 
 on:
   release:
     types: [published]
 
 jobs:
-  homebrew-releaser:
+  update-homebrew:
     name: Update Homebrew Formula
     runs-on: ubuntu-latest
     steps:
-    - name: Update Homebrew formula
-      uses: Justintime50/homebrew-releaser@v1
+    - name: Checkout homebrew-tap
+      uses: actions/checkout@v4
       with:
-        homebrew_owner: evandde
-        homebrew_tap: homebrew-tap
-        formula_folder: Formula
-        github_token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        commit_owner: evandde
-        commit_email: evandde@users.noreply.github.com
-        install: 'bin.install "G4Starter_mac" => "g4starter"'
-        target_darwin_amd64: true
-        target_darwin_arm64: true
-        update_readme_table: false
+        repository: evandde/homebrew-tap
+        token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        path: homebrew-tap
+
+    - name: Download macOS binary
+      run: |
+        VERSION="${{ github.ref_name }}"
+        curl -L -o G4Starter_mac https://github.com/evandde/G4Starter/releases/download/${VERSION}/G4Starter_mac
+
+    - name: Calculate SHA256
+      id: sha
+      run: |
+        SHA256=$(sha256sum G4Starter_mac | awk '{print $1}')
+        echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+
+    - name: Update formula
+      run: |
+        VERSION="${{ github.ref_name }}"
+        VERSION_NUM="${VERSION#v}"
+        SHA256="${{ steps.sha.outputs.sha256 }}"
+
+        cat > homebrew-tap/Formula/g4starter.rb << 'EOF'
+        # typed: false
+        # frozen_string_literal: true
+
+        class G4starter < Formula
+          desc "Interactive CLI tool for generating Geant4 simulation projects"
+          homepage "https://github.com/evandde/G4Starter"
+          version "$VERSION_NUM"
+          license "MIT"
+
+          on_macos do
+            url "https://github.com/evandde/G4Starter/releases/download/$VERSION/G4Starter_mac"
+            sha256 "$SHA256"
+          end
+
+          def install
+            bin.install "G4Starter_mac" => "g4starter"
+          end
+
+          test do
+            system "#{bin}/g4starter", "--help"
+          end
+        end
+        EOF
+
+        # Replace placeholders
+        sed -i "s/\$VERSION_NUM/$VERSION_NUM/g" homebrew-tap/Formula/g4starter.rb
+        sed -i "s/\$VERSION/$VERSION/g" homebrew-tap/Formula/g4starter.rb
+        sed -i "s/\$SHA256/$SHA256/g" homebrew-tap/Formula/g4starter.rb
+
+    - name: Commit and push
+      run: |
+        cd homebrew-tap
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add Formula/g4starter.rb
+        git commit -m "chore: update g4starter to ${{ github.ref_name }}"
+        git push
