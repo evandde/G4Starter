@@ -50,9 +50,15 @@ This will download the latest version to `~/.local/bin/g4starter`.
 
 #### Option 3: Manual Download
 
-**Windows:**
+Download the executable from [Releases](https://github.com/evandde/G4Starter/releases) and run it directly.
 
-Download `G4Starter.exe` from [Releases](https://github.com/evandde/G4Starter/releases) and run it.
+**OR use terminal:**
+
+**Windows:**
+```powershell
+curl -L -o G4Starter.exe https://github.com/evandde/G4Starter/releases/latest/download/G4Starter.exe
+.\G4Starter.exe
+```
 
 **macOS:**
 ```bash
@@ -191,9 +197,15 @@ curl -fsSL https://raw.githubusercontent.com/evandde/G4Starter/main/install.sh |
 
 #### 방법 3: 수동 다운로드
 
-**Windows:**
+[Releases](https://github.com/evandde/G4Starter/releases)에서 실행 파일을 다운로드하여 직접 실행하세요.
 
-[Releases](https://github.com/evandde/G4Starter/releases)에서 `G4Starter.exe`를 다운로드하여 실행하세요.
+**또는 터미널 사용:**
+
+**Windows:**
+```powershell
+curl -L -o G4Starter.exe https://github.com/evandde/G4Starter/releases/latest/download/G4Starter.exe
+.\G4Starter.exe
+```
 
 **macOS:**
 ```bash
