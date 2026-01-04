@@ -9,19 +9,8 @@ jobs:
     name: Publish to WinGet
     runs-on: windows-latest
     steps:
-    # NOTE: First manifest must be submitted manually to winget-pkgs
-    # After the initial submission, this workflow will auto-update
-    # See: https://github.com/microsoft/winget-pkgs/blob/master/CONTRIBUTING.md
-    - name: Check if package exists
-      id: check
-      continue-on-error: true
-      run: |
-        echo "Package must exist in winget-pkgs before auto-update works"
-        exit 0
-
-    # Uncomment after first manual submission to winget-pkgs
-    # - uses: vedantmgoyal9/winget-releaser@v2
-    #   with:
-    #     identifier: evandde.G4Starter
-    #     installers-regex: '\.exe$'
-    #     token: ${{ secrets.WINGET_TOKEN }}
+    - uses: vedantmgoyal9/winget-releaser@v2
+      with:
+        identifier: evandde.G4Starter
+        installers-regex: '\.exe$'
+        token: ${{ secrets.WINGET_TOKEN }}
