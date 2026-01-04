@@ -9,8 +9,22 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Build and Release ${{ matrix.os }}
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create ${{ github.ref_name }} \
+          --repo ${{ github.repository }} \
+          --title "Release ${{ github.ref_name }}" \
+          --notes "Automated release for ${{ github.ref_name }}"
+
+  build-and-upload:
+    name: Build and Upload ${{ matrix.os }}
+    needs: create-release
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -47,15 +61,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh release upload ${{ github.ref_name }} dist/${{ matrix.asset_name }} --clobber
-      continue-on-error: true
-
-    - name: Create Release (first upload only)
-      if: matrix.os == 'ubuntu-latest'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        if ! gh release view ${{ github.ref_name }} &>/dev/null; then
-          gh release create ${{ github.ref_name }} \
-            --title "Release ${{ github.ref_name }}" \
-            --notes "Automated release for ${{ github.ref_name }}"
-        fi
