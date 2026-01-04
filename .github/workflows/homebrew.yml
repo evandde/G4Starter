@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Update Homebrew formula
-      uses: Homebrew/homebrew-releaser@v1
+      uses: Homebrew/actions/homebrew-releaser@master
       with:
         owner: evandde
         repo: homebrew-tap
