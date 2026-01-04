@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Update Homebrew formula
-      uses: Homebrew/actions/homebrew-releaser@master
+      uses: Justintime50/homebrew-releaser@v1
       with:
-        owner: evandde
-        repo: homebrew-tap
-        formula: Formula/g4starter.rb
-        token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        install: bin.install "G4Starter_mac" => "g4starter"
-        dependencies: |
-          depends_on "python@3.12"
-        test: |
-          system "#{bin}/g4starter", "--help"
+        homebrew_owner: evandde
+        homebrew_tap: homebrew-tap
+        formula_folder: Formula
+        github_token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        commit_owner: evandde
+        commit_email: evandde@users.noreply.github.com
+        install: 'bin.install "G4Starter_mac" => "g4starter"'
+        target_darwin_amd64: true
+        target_darwin_arm64: true
+        update_readme_table: false
