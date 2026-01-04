@@ -1,0 +1,23 @@
+name: Homebrew
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  homebrew-releaser:
+    name: Update Homebrew Formula
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update Homebrew formula
+      uses: Homebrew/homebrew-releaser@v1
+      with:
+        owner: evandde
+        repo: homebrew-tap
+        formula: Formula/g4starter.rb
+        token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        install: bin.install "G4Starter_mac" => "g4starter"
+        dependencies: |
+          depends_on "python@3.12"
+        test: |
+          system "#{bin}/g4starter", "--help"
