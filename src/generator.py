@@ -5,6 +5,7 @@ Handles Geant4 project generation using Cookiecutter
 
 import os
 import sys
+import json
 import shutil
 from pathlib import Path
 from cookiecutter.main import cookiecutter
@@ -26,6 +27,118 @@ def get_template_directory() -> Path:
         src_dir = Path(__file__).parent
         project_root = src_dir.parent
         return project_root / 'cookiecutter-g4starter'
+
+
+def cleanup_project_files(project_path: Path, context: dict):
+    """
+    Clean up unselected files after project generation
+    This replaces the cookiecutter post_gen_project hook to ensure it works in PyInstaller
+
+    Args:
+        project_path: Path to the generated project
+        context: User configuration dict
+    """
+    def remove_file(filepath):
+        """Remove a file if it exists"""
+        if filepath.exists():
+            filepath.unlink()
+            print(f"Removed: {filepath.name}")
+
+    # Parse selected actions from JSON string
+    selected_actions = json.loads(context.get('selected_actions', '[]'))
+
+    # List of all possible action classes
+    all_actions = ["RunAction", "EventAction", "SteppingAction", "TrackingAction", "StackingAction"]
+
+    # Remove unselected action files
+    for action in all_actions:
+        if action not in selected_actions:
+            header_file = project_path / "include" / f"{action}.hh"
+            source_file = project_path / "src" / f"{action}.cc"
+            remove_file(header_file)
+            remove_file(source_file)
+
+    # Remove PhysicsList if not using custom physics
+    physics_list_type = context.get('physics_list_type', 'qbbc')
+    if physics_list_type != "custom":
+        physics_header = project_path / "include" / "PhysicsList.hh"
+        physics_source = project_path / "src" / "PhysicsList.cc"
+        remove_file(physics_header)
+        remove_file(physics_source)
+
+    # Handle SensitiveDetector files (rename or remove)
+    sd_class_name = context.get('sd_class_name', '')
+    placeholder_sd_header = project_path / "include" / "SensitiveDetector.hh"
+    placeholder_sd_source = project_path / "src" / "SensitiveDetector.cc"
+
+    if sd_class_name:
+        # Rename placeholder to actual class name
+        actual_sd_header = project_path / "include" / f"{sd_class_name}.hh"
+        actual_sd_source = project_path / "src" / f"{sd_class_name}.cc"
+
+        if placeholder_sd_header.exists():
+            shutil.move(str(placeholder_sd_header), str(actual_sd_header))
+            print(f"Renamed: SensitiveDetector.hh -> {sd_class_name}.hh")
+        if placeholder_sd_source.exists():
+            shutil.move(str(placeholder_sd_source), str(actual_sd_source))
+            print(f"Renamed: SensitiveDetector.cc -> {sd_class_name}.cc")
+    else:
+        # Remove placeholder files
+        remove_file(placeholder_sd_header)
+        remove_file(placeholder_sd_source)
+
+    # Handle Hit class files (rename or remove)
+    use_hit_class = context.get('use_hit_class', 'false')
+    hit_class_name = context.get('hit_class_name', '')
+    placeholder_hit_header = project_path / "include" / "SensitiveDetectorHit.hh"
+    placeholder_hit_source = project_path / "src" / "SensitiveDetectorHit.cc"
+
+    if use_hit_class == "true" and hit_class_name:
+        actual_hit_header = project_path / "include" / f"{hit_class_name}.hh"
+        actual_hit_source = project_path / "src" / f"{hit_class_name}.cc"
+
+        if placeholder_hit_header.exists():
+            shutil.move(str(placeholder_hit_header), str(actual_hit_header))
+            print(f"Renamed: SensitiveDetectorHit.hh -> {hit_class_name}.hh")
+        if placeholder_hit_source.exists():
+            shutil.move(str(placeholder_hit_source), str(actual_hit_source))
+            print(f"Renamed: SensitiveDetectorHit.cc -> {hit_class_name}.cc")
+    else:
+        remove_file(placeholder_hit_header)
+        remove_file(placeholder_hit_source)
+
+    # Handle Run class files
+    use_custom_run = context.get('use_custom_run', 'false')
+    if use_custom_run != "true":
+        run_header = project_path / "include" / "Run.hh"
+        run_source = project_path / "src" / "Run.cc"
+        remove_file(run_header)
+        remove_file(run_source)
+
+    # Print summary
+    print("\nProject generation complete!")
+    if selected_actions:
+        print(f"Included UserActions: {', '.join(selected_actions)}")
+    else:
+        print("No optional UserActions included (minimal skeleton)")
+
+    # Display physics type
+    if physics_list_type == "custom":
+        physics_display = "Custom modular physics list"
+    elif physics_list_type == "factory":
+        factory_name = context.get('physics_factory_name', 'QBBC')
+        physics_display = f"PhysicsListFactory - {factory_name}"
+    else:
+        physics_display = "QBBC"
+    print(f"Physics list: {physics_display}")
+
+    # Display SD/Hit/Run status
+    if sd_class_name:
+        print(f"SensitiveDetector: {sd_class_name}")
+    if use_hit_class == "true" and hit_class_name:
+        print(f"Hit class: {hit_class_name}")
+    if use_custom_run == "true":
+        print("Custom Run class: Yes")
 
 
 def generate_project(context):
@@ -109,6 +222,11 @@ def generate_project(context):
             extra_context=context,
             output_dir=str(output_dir)
         )
+
+        # Clean up unselected files (replaces post_gen_project hook)
+        # This is done here instead of in hook to ensure it works in PyInstaller
+        cleanup_project_files(Path(project_path), context)
+
         return Path(project_path)
     except Exception as e:
         print(f"\nError: Project generation failed: {e}")
