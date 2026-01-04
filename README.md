@@ -25,9 +25,24 @@ G4Starter is a command-line tool that generates ready-to-compile Geant4 C++ simu
   - Advanced mode: Custom Run class, Hit class
 - **Production Ready**: Generated projects compile with Geant4 out of the box
 
-### Quick Start
+### Installation
 
-1. **Download** the executable for your platform from [Releases](https://github.com/yourusername/G4Starter/releases)
+#### Option 1: Package Manager (Recommended)
+
+**Windows (WinGet)**
+```powershell
+winget install evandde.G4Starter
+```
+
+**macOS/Linux (Homebrew)**
+```bash
+brew tap evandde/tap
+brew install g4starter
+```
+
+#### Option 2: Download Binary
+
+1. **Download** the executable for your platform from [Releases](https://github.com/evandde/G4Starter/releases)
    - Windows: `G4Starter.exe`
    - macOS: `G4Starter_mac`
    - Linux: `G4Starter_linux`
@@ -42,9 +57,21 @@ G4Starter is a command-line tool that generates ready-to-compile Geant4 C++ simu
    ./G4Starter_mac
    ```
 
-3. **Answer** the interactive questions (use arrow keys to select)
+### Quick Start
 
-4. **Build** your generated project
+1. **Run** G4Starter
+   ```bash
+   # If installed via package manager
+   g4starter
+
+   # Or run the downloaded executable directly
+   ./G4Starter_mac  # macOS/Linux
+   G4Starter.exe    # Windows
+   ```
+
+2. **Answer** the interactive questions (use arrow keys to select)
+
+3. **Build** your generated project
    ```bash
    # Windows
    cd YourProject
@@ -128,9 +155,24 @@ G4Starter는 대화형 인터페이스를 통해 컴파일 가능한 Geant4 C++ 
   - 고급 모드: Custom Run 클래스, Hit 클래스
 - **즉시 사용 가능**: 생성된 프로젝트는 바로 컴파일 가능
 
-### 사용 방법
+### 설치 방법
 
-1. **다운로드**: [Releases](https://github.com/yourusername/G4Starter/releases)에서 운영체제에 맞는 실행 파일 다운로드
+#### 방법 1: 패키지 매니저 (권장)
+
+**Windows (WinGet)**
+```powershell
+winget install evandde.G4Starter
+```
+
+**macOS/Linux (Homebrew)**
+```bash
+brew tap evandde/tap
+brew install g4starter
+```
+
+#### 방법 2: 바이너리 다운로드
+
+1. **다운로드**: [Releases](https://github.com/evandde/G4Starter/releases)에서 운영체제에 맞는 실행 파일 다운로드
    - Windows: `G4Starter.exe`
    - macOS: `G4Starter_mac`
    - Linux: `G4Starter_linux`
@@ -145,9 +187,21 @@ G4Starter는 대화형 인터페이스를 통해 컴파일 가능한 Geant4 C++ 
    ./G4Starter_mac
    ```
 
-3. **질문에 답변** (화살표 키로 선택)
+### 사용 방법
 
-4. **프로젝트 빌드**
+1. **G4Starter 실행**
+   ```bash
+   # 패키지 매니저로 설치한 경우
+   g4starter
+
+   # 또는 다운로드한 실행 파일 직접 실행
+   ./G4Starter_mac  # macOS/Linux
+   G4Starter.exe    # Windows
+   ```
+
+2. **질문에 답변** (화살표 키로 선택)
+
+3. **프로젝트 빌드**
    ```bash
    # Windows
    cd YourProject
